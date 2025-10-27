@@ -7,7 +7,7 @@
             {
               "id": "id-1",
               "name": "huggingFaceToken",
-              "value": "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",
+              "value": " use your own token",
               "type": "string"
             },
             {
@@ -19,7 +19,7 @@
             {
               "id": "id-3",
               "name": "googleDriveFolderId",
-              "value": "1UnXfrherOKMmj03-Bdto5A7R4yfLyv48",
+              "value": " use your own Drive",
               "type": "string"
             }
           ]
@@ -124,7 +124,7 @@
           "value": "1iW-PJRGBf66CuVCFTJzREQ7xQ9Z7dxz8",
           "mode": "list",
           "cachedResultName": "manishimage",
-          "cachedResultUrl": "https://drive.google.com/drive/folders/1iW-PJRGBf66CuVCFTJzREQ7xQ9Z7dxz8"
+          "cachedResultUrl": "https://drive.google.com/drive/folders/ YOUR Folder ID"
         },
         "options": {}
       },
@@ -191,7 +191,7 @@
       "name": "Google Gemini Chat Model1",
       "credentials": {
         "googlePalmApi": {
-          "id": "vB25EYwQaFph4Uwz",
+          "id": "Your Gemini API",
           "name": "please dont use this api key"
         }
       }
@@ -210,7 +210,7 @@
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
-          "id": "vB25EYwQaFph4Uwz",
+          "id": "Your Gemini API",
           "name": "please dont use this api key"
         }
       }
@@ -311,4 +311,5 @@
     "templateCredsSetupCompleted": true,
     "instanceId": "5b533a58b55c9cfffb3ca6a1fd154d9ee56f64098154b77dce684a20e62b0a1a"
   }
+
 }
