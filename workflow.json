@@ -1,0 +1,316 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "huggingFaceToken",
+              "value": " use your own token",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "huggingFaceModel",
+              "value": "stabilityai/stable-diffusion-3-medium-diffusers",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "googleDriveFolderId",
+              "value": " use your own Drive",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "include": "selected",
+        "options": {}
+      },
+      "id": "edc83dba-832b-4175-aefc-c7b95d5f8a4c",
+      "name": "Workflow Configuration4",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -176,
+        -800
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ 'https://api-inference.huggingface.co/models/' + $('Workflow Configuration4').first().json.huggingFaceModel }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $json.huggingFaceToken }}"
+            },
+            {
+              "name": "Accept",
+              "value": "image/jpeg"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { \"inputs\": $(\"AI Agent\").item.json.output.replaceAll('\"', '').trim() } }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "f225f900-bd74-48ce-9736-0b215d0b6f4a",
+      "name": "Generate Image via Hugging Face4",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        96,
+        -800
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "manish",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1376,
+        -800
+      ],
+      "id": "b0bb0a9b-0f68-4bd4-bbac-4596adcab594",
+      "name": "Webhook",
+      "webhookId": "6099ba6e-a5f6-4509-9e7e-e38ba9f7a22c"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Webhook').item.json.body.keyword }}",
+        "options": {
+          "systemMessage": "=Generate a professional  post related to the keyword \" {{ $('Webhook').item.json.body.keyword }}\". \nThe content should be:\n- Engaging and informative, suitable for a professional audience.\n- Focused on industry trends, skills, or insights related to the keyword.\n- Positive, motivating, and thought-leadership-oriented.\n- Include a call-to-action (e.g., asking questions, encouraging discussions, or offering solutions).\n- Avoid overly casual or informal language. Keep the tone professional and polished.\n- Include relevant hashtags that make the post discoverable for professionals in the industry.\n\nMake sure the content is:\n- Between 150-300 words.\n- Well-structured with clear paragraphs and proper grammar.\n- Include specific points that add value to the LinkedIn audience.\n",
+          "batching": {}
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -640,
+        -800
+      ],
+      "id": "f0e42e39-9eca-42d8-a45d-64348e6cb9d8",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "name": "manishurl",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1iW-PJRGBf66CuVCFTJzREQ7xQ9Z7dxz8",
+          "mode": "list",
+          "cachedResultName": "manishimage",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/ YOUR Folder ID"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        448,
+        -800
+      ],
+      "id": "6d55fde8-c339-4a31-9869-350cd974d5d2",
+      "name": "Upload file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "7zMaiOuf8HuaRuTP",
+          "name": "Bidept"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"webContentLink\": $json.webContentLink, \"webViewLink\": $json.webViewLink, \"output\": $(\"AI Agent1\").item.json.output } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        752,
+        -800
+      ],
+      "id": "a52c1138-311c-4d9b-84bf-d08607c5feaf",
+      "name": "Respond to Webhook1",
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.keyword }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Create a professional, artistic poster-style graphic for a VOIP and voice communication brand. The design should feature a central character — a friendly, expressive person wearing a modern headset — symbolizing clear voice connection and digital communication. The character should display positive emotion: confidence, warmth, and engagement, as if actively speaking or listening attentively.\n\nIntegrate subtle brand elements such as a minimalist logo (placeholder or abstract mark), tagline text, and VOIP-related visuals like sound waves, signal lines, microphones, or voice data icons.\n\nThe composition should feel dynamic and inspiring, balancing technology with human connection.\n\nThe art style should resemble a textured canvas painting or digital illustration — with soft brushstrokes, layered lighting, and a modern aesthetic.\n\nUse a color palette that reflects clarity and trust — shades of blue, teal, white, and soft gradients. The final image should look like a poster for a cutting-edge communication brand, suitable for web, social media, or print marketing."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -1072,
+        -800
+      ],
+      "id": "1a3419d3-7c06-4d50-a0de-608ce40f3162",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -672,
+        -576
+      ],
+      "id": "07b80e10-143b-46d8-8c2a-37407635af5e",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Your Gemini API",
+          "name": "please dont use this api key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -1152,
+        -624
+      ],
+      "id": "b54a40d5-356c-4d7f-9589-cfb37c775512",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Your Gemini API",
+          "name": "please dont use this api key"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Workflow Configuration4": {
+      "main": [
+        [
+          {
+            "node": "Generate Image via Hugging Face4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Image via Hugging Face4": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5b533a58b55c9cfffb3ca6a1fd154d9ee56f64098154b77dce684a20e62b0a1a"
+  }
+
+}
+
