@@ -8,7 +8,7 @@ This project automatically creates **captions, hashtags, and images** from a sin
 
 ## 🎯 Purpose of this Project
 **The purpose of this project** is to demonstrate how AI can automate the process of generating both **images and text** in a unified workflow using **n8n**.  
-By connecting powerful APIs like **OpenAI**, **Stability AI**, and **Replicate**, this system delivers creative automation with minimal manual effort.
+By connecting powerful APIs like **OpenAI** and **Gemini AI** this system delivers creative automation with minimal manual effort.
 
 This project serves as a **creative automation assistant** ideal for:
 - Social media managers  
@@ -28,7 +28,7 @@ This project serves as a **creative automation assistant** ideal for:
    - Uses **OpenAI GPT** or similar models to create a descriptive caption or prompt based on input.
 
 3. **AI Image Generation Node**  
-   - Takes the generated text and produces an AI image using **Stability AI** or **Replicate API**.
+   - Takes the generated text and produces an AI image using **OpenAI** or **Gemini AI**.
 
 4. **Hashtag Generator Node**  
    - Automatically extracts or generates hashtags related to the content for better engagement.
@@ -61,7 +61,7 @@ The **HTML dashboard** serves as the user interface for interacting with the n8n
 
 ## 🧰 Requirements to Run
 1. **n8n** installed locally or on the cloud  
-2. **API keys** for OpenAI / Stability AI / Replicate  
+2. **API keys** for OpenAI /Gemini AI
 3. **HTML dashboard** file (included in the project)  
 4. Configured **n8n webhook URL**  
 5. (Optional) **Google Sheets / Drive** integration  
@@ -76,5 +76,5 @@ the AI-generated description becomes the **prompt** for image generation, enabli
 ```python
 # Example pseudo flow
 Input("cat in space") 
-→ GPT Text Node → "A cute astronaut cat floating in space" 
+→ Gemini Text Node → "A cute astronaut cat floating in space" 
 → Image Node → AI-generated image output
